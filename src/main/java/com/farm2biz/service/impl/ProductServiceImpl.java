@@ -68,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
 		productRepository.delete(existing); // DELETE happens here
 		return new ApiResponse("Product deleted successfully", "success");
 	}
-
+//mapping
 	private ProductDTO mapToDto(Product product) {
 		ProductDTO dto = new ProductDTO();
 		dto.setProductId(product.getProductId());
