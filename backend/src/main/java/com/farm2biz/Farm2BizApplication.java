@@ -7,8 +7,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-// This is the "front door" of the whole backend.
-
 @SpringBootApplication
 public class Farm2BizApplication {
 	public static void main(String[] args) {
@@ -16,16 +14,15 @@ public class Farm2BizApplication {
 		
 	}
 	
-	@Bean //method level annotation - to declare a method returning java object
+	@Bean
 	 ModelMapper modelMapper()
 	{
 		ModelMapper mapper=new ModelMapper();
-		//configure mapper - to transfer the matching props (name + data type)
+		// STRICT + skip nulls so partial updates never wipe fields
 		mapper.getConfiguration()
 		.setMatchingStrategy(MatchingStrategies.STRICT)
-		//configure mapper - not to transfer nulls from src -> dest
 		.setPropertyCondition(Conditions.isNotNull());
-		return mapper;//Method rets configured ModelMapper bean to SC
+		return mapper;
 	}
 	
 }

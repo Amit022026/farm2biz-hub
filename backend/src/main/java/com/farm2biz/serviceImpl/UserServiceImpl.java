@@ -25,45 +25,31 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService{
 
 	private final UserRepository userRepository;
-	
-	// NEW in Phase 2 - three more things this Service now depends on:
-		private final PasswordEncoder passwordEncoder;       // hashes passwords before saving
-		private final AuthenticationManager authenticationManager; // checks email+password during login
-		private final JwtUtil jwtUtil;                        // issues the token after a successful login
 
-	// ModelMapper created directly
-	// entity<->DTO conversion just makes its own instance like this.
+	private final PasswordEncoder passwordEncoder;
+	private final AuthenticationManager authenticationManager;
+	private final JwtUtil jwtUtil;
+
 	private ModelMapper mapper = new ModelMapper();
 
 	@Override
 	public UserDTO createUser(UserDTO dto) {
 
 		User user = mapper.map(dto, User.class);
-		// CRITICAL: never save a plain-text password. BCrypt turns
-				// "test123" into something like "$2a$10$N9qo8uLOickgx2ZMRZoMy..."
-				// - a one-way hash. Even if our database were ever leaked, nobody
-				// could recover the original password from this string.
+		// Never store plain-text passwords - always hash
 		user.setPassword(passwordEncoder.encode(dto.getPassword()));
 		
 		User saved = userRepository.save(user);
 		
 		UserDTO response = mapper.map(saved, UserDTO.class);
-		response.setPassword(null); // NEVER send any form of the password back, hashed or not
+		response.setPassword(null); // never return any form of the password
 		return response;
 	}
 	@Override
 	public AuthResp login(AuthRequest request) {
-		// This one line does A LOT: it looks up the user via
-		// CustomUserDetailsService, then uses PasswordEncoder to check if
-		// the submitted password's hash matches the stored hash. If
-		// anything is wrong (user doesn't exist, wrong password), it
-		// throws BadCredentialsException automatically - we don't have to
-		// write that comparison logic ourselves.
 		authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
-		// If we reach this line, the password was CORRECT. Now fetch the
-		// full user record so we can build our response.
 		User user = userRepository.findByEmail(request.getEmail())
 				.orElseThrow(() -> new ResourceNotFoundException("User not found: " + request.getEmail()));
 

@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-//What the client sends us at POST /users/login
 @Getter
 @Setter
 @NoArgsConstructor

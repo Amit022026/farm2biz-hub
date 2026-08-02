@@ -28,9 +28,6 @@ public class User {
 
 	private String email;
 	
-	// Plain text for now -not secure in JWT lesson we
-		// will hash this
-		// this lesson focused on relationships.
 		private String password;
 		
 		@Enumerated(EnumType.STRING)
