@@ -27,23 +27,21 @@ public class Product {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 	private Long productId;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "farmer_id")
-	private User farmer;
 
 	private String name;
-
-	private String category;
 
 	private BigDecimal price;
 
 	private BigDecimal quantityAvailable;
 
-	private String unit; // e.g. "kg", "dozen"
+	private String unit;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "farmer_id")
+	private User farmer;
 
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "category_id")
+	private Category category;
 
-	
-	
 }

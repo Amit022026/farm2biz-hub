@@ -18,8 +18,6 @@ public class ProductDTO {
 	@NotBlank(message = "Product name is required")
 	private String name;
 
-	private String category;
-
 	@NotNull(message = "Price is required")
 	@DecimalMin(value = "0.0", inclusive = false, message = "Price must be greater than 0")
 	private BigDecimal price;
@@ -32,10 +30,13 @@ public class ProductDTO {
 	
 
 	@NotNull(message = "farmerId is required")
-	private Long farmerId; // CLIENT sends this on create - "farmer owns this product"
+	private Long farmerId; // client sends on create
 
-	private String farmerName; // SERVER fills this in on response only-client never sends it
+	private String farmerName;
 
- 
+	@NotNull(message = "categoryId is required")
+	private Long categoryId; // client sends on create
+
+	private String categoryName;
 	
 }
