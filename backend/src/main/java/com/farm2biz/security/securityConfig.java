@@ -18,77 +18,67 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 import lombok.RequiredArgsConstructor;
 
-//@Configuration -> this class produces Spring beans
-//@EnableWebSecurity -> enable Spring Security for this whole app
-//@EnableMethodSecurity -> lets us write @PreAuthorize("hasRole('FARMER')")
-//directly above Controller methods
-
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class securityConfig {
 
-	private final CustomUserDetailsService userDetailsService;
 	private final JwtAuthFilter jwtAuthFilter;
 
-	// A "bean" turns plain-txt passwords into hashes,
-	// can check the plain-text password match this hash or not
-	// without need to un-hash anything.
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
-	// Tells Spring Security: "when someone tries to log in, use OUR
-	// CustomUserDetailsService to find them, and OUR PasswordEncoder to
-	// check their password."
-	@Bean
-	public AuthenticationProvider authenticationProvider() {
-		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-		provider.setUserDetailsService(userDetailsService);
-		provider.setPasswordEncoder(passwordEncoder());
-		return provider;
-	}
-
-	// UserServiceImpl.login() will inject this bean and call
-	// .authenticate(email, password) on it directly.
 	@Bean
 	public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
 		return config.getAuthenticationManager();
 	}
 
-	// THE most important method in this file - the actual rulebook.
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
-			// CSRF protection is for browser-cookie-based sessions; our app
-			// uses stateless JWT tokens instead, so we can safely disable it.
+			// CSRF disabled: stateless JWT auth, no cookie-based sessions
 			.csrf(csrf -> csrf.disable())
 
-			// STATELESS = "don't create/remember any server-side session for
-			// a logged-in user." Every single request must prove who it is
-			// all over again, using its JWT. This is what makes JWT auth
-			// scale well - the server holds zero memory of who's logged in.
-			.sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+			// stateless: no server-side session, every request re-proves identity via JWT
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-			.authorizeHttpRequests(auth -> auth
-				// Anyone can register or log in without already being logged in
-				.requestMatchers("/users/register", "/users/login").permitAll()
-				// Anyone (even logged-out visitors) can BROWSE products -
-				// matches "Buyer -> Search Product" not requiring login first
-				.requestMatchers(HttpMethod.GET, "/products/**").permitAll()
-				// Swagger UI / OpenAPI docs — no auth required
+			.authorizeHttpRequests(request -> request
+					.requestMatchers("/users/register", "/users/login").permitAll()
+					.requestMatchers(HttpMethod.GET, "/products/**").permitAll()
+					.requestMatchers(HttpMethod.GET, "/categories/**").permitAll()
 				.requestMatchers("/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui.html").permitAll()
-				// every other endpoint requires a valid JWT
+				
+				.requestMatchers(HttpMethod.POST, "/products").hasRole("FARMER")
+				.requestMatchers(HttpMethod.PUT, "/products/**").hasRole("FARMER")
+				.requestMatchers(HttpMethod.DELETE, "/products/**").hasRole("FARMER")
+
+				.requestMatchers(HttpMethod.POST, "/categories").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.PUT, "/categories/**").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.DELETE, "/categories/**").hasRole("ADMIN")
+
+				.requestMatchers(HttpMethod.POST, "/orders").hasRole("BULK_BUYER")
+				.requestMatchers(HttpMethod.GET, "/orders/my-orders").hasRole("BULK_BUYER")
+				.requestMatchers(HttpMethod.PATCH, "/orders/*/cancel").hasRole("BULK_BUYER")
+
+				.requestMatchers(HttpMethod.GET, "/orders/farmer-orders").hasRole("FARMER")
+				.requestMatchers(HttpMethod.PATCH, "/orders/*/accept").hasRole("FARMER")
+				.requestMatchers(HttpMethod.PATCH, "/orders/*/reject").hasRole("FARMER")
+
+				.requestMatchers(HttpMethod.GET, "/users").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.PUT, "/users/**").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.DELETE, "/users/**").hasRole("ADMIN")
+				.requestMatchers(HttpMethod.GET, "/orders").hasRole("ADMIN")
+				.requestMatchers("/reports/**").hasRole("ADMIN")
+			
 				.anyRequest().authenticated()
 			)
-			.authenticationProvider(authenticationProvider())
-			// Insert OUR bouncer (Step 5) to run BEFORE Spring Security's
-			// own built-in login filter, on every request.
-			.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-		return http.build();
+						// run before Spring's auth filter so the SecurityContext is set each request
+						.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+		
+			return http.build();
 	}
 }
 
