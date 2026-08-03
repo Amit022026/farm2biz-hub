@@ -22,6 +22,6 @@ public class ReportSummaryDTO {
 	private long totalCategories;
 	private long totalOrders;
 	private Map<String, Long> ordersByStatus;
-	private BigDecimal totalRevenue; // sum of totalAmount for ACCEPTED orders only
-	
+	private BigDecimal totalRevenue; // sum of totalAmount for ACCEPTED orders only	
 }
+
