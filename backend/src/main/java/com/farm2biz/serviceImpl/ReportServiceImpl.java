@@ -23,10 +23,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class ReportServiceImpl implements ReportService {
 
-	// This Service is unusual: it depends on FOUR different repositories
-	// at once, because a "report" by definition pulls a little bit of
-	// data from EVERYWHERE in the system. Every other Service so far has
-	// only needed one or two repositories.
+	// This Service is unusual it depends on FOUR different repositories at once.
 	private final UserRepository userRepository;
 	private final ProductRepository productRepository;
 	private final CategoryRepository categoryRepository;
