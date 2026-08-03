@@ -62,6 +62,9 @@ public class securityConfig {
 				.requestMatchers(HttpMethod.POST, "/orders").hasRole("BULK_BUYER")
 				.requestMatchers(HttpMethod.GET, "/orders/my-orders").hasRole("BULK_BUYER")
 				.requestMatchers(HttpMethod.PATCH, "/orders/*/cancel").hasRole("BULK_BUYER")
+				
+				// ---- Bulk Buyer: Pay for an order ----
+				.requestMatchers(HttpMethod.POST, "/payments").hasRole("BULK_BUYER")
 
 				.requestMatchers(HttpMethod.GET, "/orders/farmer-orders").hasRole("FARMER")
 				.requestMatchers(HttpMethod.PATCH, "/orders/*/accept").hasRole("FARMER")
