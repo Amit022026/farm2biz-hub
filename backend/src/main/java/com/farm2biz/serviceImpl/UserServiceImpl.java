@@ -8,11 +8,13 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.farm2biz.custom_exceptions.InvalidInputException;
 import com.farm2biz.custom_exceptions.ResourceNotFoundException;
 import com.farm2biz.dtos.ApiResponse;
 import com.farm2biz.dtos.AuthRequest;
 import com.farm2biz.dtos.AuthResp;
 import com.farm2biz.dtos.UserDTO;
+import com.farm2biz.entities.Role;
 import com.farm2biz.entities.User;
 import com.farm2biz.repository.UserRepository;
 import com.farm2biz.security.JwtUtil;
@@ -34,6 +36,12 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserDTO createUser(UserDTO dto) {
+
+		// Public self-registration must never be able to create an ADMIN;
+		// the admin account is seeded at startup (see DataSeeder).
+		if (dto.getRole() == Role.ADMIN) {
+			throw new InvalidInputException("Self-registration as ADMIN is not allowed");
+		}
 
 		User user = mapper.map(dto, User.class);
 		// Never store plain-text passwords - always hash
