@@ -28,7 +28,8 @@ public class ProductDTO {
 
 	private String unit;
 	
-
+	private String imageUrl;
+	
 	@NotNull(message = "farmerId is required")
 	private Long farmerId; // client sends on create
 

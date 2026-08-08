@@ -12,7 +12,7 @@ import io.swagger.v3.oas.annotations.security.SecurityScheme;
 
 @SecurityScheme(name = "bearerAuth", type = SecuritySchemeType.HTTP, scheme = "bearer", bearerFormat = "JWT")
 
-@OpenAPIDefinition(info = @Info(title = "Healthcare API", version = "v1.0"), security = {
+@OpenAPIDefinition(info = @Info(title = "Farm2BizAPI", version = "v1.0"), security = {
 
 		@SecurityRequirement(name = "basicAuth") ,
 		@SecurityRequirement(name = "bearerAuth")})

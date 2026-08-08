@@ -73,6 +73,9 @@ public class ProductServiceImpl implements ProductService{
 		existing.setPrice(dto.getPrice());
 		existing.setQuantityAvailable(dto.getQuantityAvailable());
 		existing.setUnit(dto.getUnit());
+		if (dto.getImageUrl() != null) {
+			existing.setImageUrl(dto.getImageUrl());
+		}
 			// Category is mutable on update; farmer (ownership) is not
 				if (dto.getCategoryId() != null) {
 					Category category = categoryRepository.findById(dto.getCategoryId())
