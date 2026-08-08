@@ -35,6 +35,8 @@ public class Product {
 	private BigDecimal quantityAvailable;
 
 	private String unit;
+	
+	private String imageUrl;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "farmer_id")
