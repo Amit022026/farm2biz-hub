@@ -89,7 +89,7 @@ Built using **React.js + Spring Boot + MySQL**, the application follows a layere
 
 #   System Architecture
 
-```text
+
                      ┌─────────────────────┐
                      │   React Frontend    │
                      │                     │
@@ -120,7 +120,8 @@ Built using **React.js + Spring Boot + MySQL**, the application follows a layere
                     │ Orders           │
                     │ Payments         │
                     └──────────────────┘
-```
+
+
 
 ### Backend Architecture
 
@@ -184,7 +185,7 @@ Farm2Biz-Hub/
 
 ---
 
-# 👥 User Roles
+#  User Roles
 
 ###   Farmer
 
@@ -505,7 +506,7 @@ Git & GitHub
 
 ---
 
-# 📊 Project Status
+#  Project Status
 
 | Component                | Status      |
 | ------------------------ | ----------- |
