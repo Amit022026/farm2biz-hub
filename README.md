@@ -330,6 +330,26 @@ Test Protected APIs
 APIs can also be tested using **Postman**.
 
 ---
+## 📸 Screenshots
+
+### Registration
+
+![Login]()
+
+### Registration
+
+![Registration](<img width="1920" height="1080" alt="Registration page" src="https://github.com/user-attachments/assets/2f4b0d9c-5f0b-4851-9f0a-e35e4e96bf31" />
+)
+
+### Product Dashboard
+
+![Products](<img width="1920" height="1080" alt="Homepage1" src="https://github.com/user-attachments/assets/4a4c3709-5f69-4244-baf9-b7385a99ef82" />
+)
+
+### Admin Dashboard
+
+![Admin Page1](<img width="1920" height="1080" alt="all orders admin" src="https://github.com/user-attachments/assets/adca6ca8-1ba7-466c-bbb8-a05f79ed67e5" />
+)
 
 #   Getting Started
 
@@ -521,27 +541,6 @@ Git & GitHub
 | Payment Module           | Completed |
 
 ---
-## 📸 Screenshots
-
-### Login
-
-![Login](<img width="1920" height="1080" alt="screenshotLogin" src="https://github.com/user-attachments/assets/ab8cd809-763d-410b-9bbe-ed61c461e06f" />
-)
-
-### Registration
-
-![Registration](<img width="1920" height="1080" alt="Registration page" src="https://github.com/user-attachments/assets/2f4b0d9c-5f0b-4851-9f0a-e35e4e96bf31" />
-)
-
-### Product Dashboard
-
-![Products](<img width="1920" height="1080" alt="Homepage1" src="https://github.com/user-attachments/assets/4a4c3709-5f69-4244-baf9-b7385a99ef82" />
-)
-
-### Admin Dashboard
-
-![Admin Page1](<img width="1920" height="1080" alt="all orders admin" src="https://github.com/user-attachments/assets/adca6ca8-1ba7-466c-bbb8-a05f79ed67e5" />
-)
 
 #  Author
 
