@@ -334,7 +334,7 @@ APIs can also be tested using **Postman**.
 
 ### Registration
 
-![Registration](screenshots/Registration page.png)
+![Registration](screenshots/Registration_Page.png)
 
 ### Home Page
 
@@ -347,9 +347,9 @@ APIs can also be tested using **Postman**.
 
 ![Farmer page](screenshots/farmerdashboard.png)
 
-### Buyer Dashboard
+### Bulk_Buyer Dashboard
 
-![Buyer Page](screenshots/Bulk_Buyer Dashboard.png)
+![Bulk_Buyer Page](screenshots/Bulk_Buyer_Dashboard.png)
 
 
 
